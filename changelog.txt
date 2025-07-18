@@ -1,0 +1,5 @@
+4/28/25
+- completely redone navigation
+- structure is based on page navigation
+- start on a login/sign up page, then move to home after. 
+- Made home display the nickname
