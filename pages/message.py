@@ -45,21 +45,24 @@ with st.container():
             name = st.text_input("Room Name")
             users = st.multiselect("Add People", list(employees.keys()))
             submit_button = st.form_submit_button('Submit')
-    
+            # Prep info for export to Supabase
             if submit_button:
                 data = {
                     "room_name": name,
                     "users": users
                 }
+                # If room name isn't blank and has users in it
                 if data["room_name"].strip() != "" and len(data["users"]) > 0:
                     try:
+                        # upsert into supabase the chat room name and id
                         response = supabase.table("chat_rooms").upsert(data, on_conflict=["room_id"]).execute()
+                        # if connection works, hide form and rerun
                         if response.data:
                             st.session_state.show_room_form = False
                             st.rerun()
                         else:
                             st.error("Error saving to database")
-                    # Will display error message
+                    # Will display error message if cannot connect to supabase
                     except Exception as e:
                         st.error(f"Supabase error: {str(e)}")
                 else:
@@ -67,13 +70,26 @@ with st.container():
 
 # Displays all rooms in nice style
 ## Note: Change room users to display latest message instead ##
+
+    
+
 for room in room_response.data:
+    room_key = f"messages:{room['room_id']}"
+    messages = r.lrange(room_key, 0, 0)
+    if messages:
+        try:
+            message_data = json.loads(messages[0])
+            latest_message = f"{message_data['user']}: {message_data['message']}"
+        except (json.JSONDecodeError, KeyError) as e:
+            latest_message = "Error parsing message"
+    else:
+        latest_message = "No messages yet"
     with st.form(f"{room['room_id']}"):
         st.markdown(
             f"""
             <div style='padding: 10px; border: 1px solid #ccc; border-radius: 10px; cursor: pointer;'>
                 <strong>{room['room_name']}</strong><br>
-                {room['users']}
+                {latest_message}
             </div>
             """,
             unsafe_allow_html=True
