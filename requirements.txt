@@ -4,3 +4,4 @@ redis==5.1.0
 streamlit-autorefresh
 plotly
 streamlit-calendar
+streamlit-datetime-range-picker
