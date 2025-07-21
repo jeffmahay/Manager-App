@@ -17,7 +17,7 @@ st.sidebar.page_link('pages/message.py', label='Messages')
 st.sidebar.page_link('pages/calendar.py', label='Schedule')
 st.sidebar.page_link('pages/chart.py', label='Statistics')
 
-st.header("Analytics Dashboard")
+st.header("Statistics Dashboard")
 
 if 'show_data' not in st.session_state:
     st.session_state.show_data = False
