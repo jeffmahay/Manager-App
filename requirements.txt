@@ -1,3 +1,6 @@
 supabase
 st-supabase-connection==2.0.1
 redis==5.1.0
+streamlit-autorefresh
+plotly
+streamlit-calendar

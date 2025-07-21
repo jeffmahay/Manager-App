@@ -51,7 +51,7 @@ for x in data_off[-5:]:
         date = dt.date().isoformat()
         st.markdown(f"{x['first_name']} {x['last_name']}")
         st.markdown(f"Date requested: {date}")
-        st.markdown(f"Hours requested: {x["hours"]}")
+        st.markdown(f"Hours requested: {x['hours']}")
         st.markdown(f"{x['resolved'].capitalize()}")
 
 if st.button("Back"):
